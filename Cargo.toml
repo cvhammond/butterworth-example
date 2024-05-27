@@ -9,5 +9,5 @@ edition = "2021"
 egui = "0.27"
 egui_plot = "0.27"
 eframe = "0.27"
-c3dio = { version = "0.8.0", path = "../c3dio" }
+c3dio = "0.8.0"
 butterworth = "0.1.0"

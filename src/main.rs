@@ -27,6 +27,7 @@ impl eframe::App for App {
             ui.horizontal(|ui| {
                 if ui.add(Button::new("Open C3D file")).clicked() {
                     self.c3d = Some(C3d::load("src/18124framesf.c3d").unwrap());
+                    self.filtered = false;
                 }
                 if let Some(c3d) = &mut self.c3d {
                     ui.add(Label::new("C3D file loaded"));
