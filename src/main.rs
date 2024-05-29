@@ -6,7 +6,7 @@ use egui_plot::{Line, PlotPoints};
 
 fn main() {
     let _ = eframe::run_native(
-        "Test egui",
+        "Butterworth filtering a C3D file",
         eframe::NativeOptions {
             viewport: egui::ViewportBuilder::default().with_inner_size(egui::vec2(1024.0, 768.0)),
             ..Default::default()
@@ -36,9 +36,8 @@ impl eframe::App for App {
                             c3d,
                             Filter::new(
                                 4,
-                                c3d.points.frame_rate as f64
-                                    * c3d.analog.samples_per_channel_per_frame as f64,
-                                Cutoff::LowPass(2.0),
+                                c3d.points.frame_rate as f64,
+                                Cutoff::LowPass(0.5),
                             )
                             .unwrap(),
                         );
@@ -50,11 +49,11 @@ impl eframe::App for App {
             if let Some(c3d) = &self.c3d {
                 let n = c3d.points.rows() - 2;
                 let line_points: PlotPoints = (0..=n)
-                    .map(|i| [i as f64, c3d.points.get(i, 2).unwrap()[2] as f64])
+                    .map(|i| [i as f64, c3d.points.get(i, 2).unwrap()[1] as f64])
                     .collect();
                 let line = Line::new(line_points);
                 egui_plot::Plot::new("example_plot")
-                    .height(256.0)
+                    .height(512.0)
                     .show_axes(false)
                     .show(ui, |plot_ui| plot_ui.line(line));
             }
@@ -64,7 +63,7 @@ impl eframe::App for App {
 
 fn filter_markers(c3d: &mut C3d, filter: Filter) {
     let i = 2;
-    let j = 2;
+    let j = 1;
     let mut temp: Vec<f64> = c3d
         .points
         .iter_col(i)
